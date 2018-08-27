@@ -76,7 +76,8 @@ public class HelloWorldClient {
    */
   public static void main(String[] args) throws Exception {
     HelloWorldClient client = new HelloWorldClient("localhost", 50051);
-    try {
+	//HelloWorldClient client = new HelloWorldClient("localhost", 50440);
+	 try {
       /* Access a service running on the local machine on port 50051 */
       String user = "world";
       if (args.length > 0) {
@@ -91,6 +92,6 @@ public class HelloWorldClient {
 
 /*
  How to run:
-  client: mvn exec:java -Dexec.mainClass=com....client.HelloWorldClient
+  client: mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.client.HelloWorldClient
   server: java -jar rms-rootserver-poc-1.14.0.jar
 */
