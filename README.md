@@ -1,18 +1,25 @@
-## GRPC POC for RMS
-The repository contains an example of how to generate stub code using maven, how to implement a client/server from generated stub code
+# GRPC POC for RMS
+The repository contains an example of how to generate stub code using maven, how to implement a client/server from generated stub code.This project incudes three modules. it is an example of maven multiple modules project.
+
+1. rms-grpc-api: includes protobuffer files, this modules will be used with other modules
+2. rms-grpc-server: implements gRPC server 
+3. rms-grpc-client: implements gRPC client to call gRPC server
+
+[Source] https://github.com/grpc/grpc-java/tree/master/examples
 
 
-## How to RUN
+## How to RUN POC with Maven
 
-## Maven
+### Hello world
 
-If you prefer to use Maven:
+```text
 $ mvn verify
+$ mvn install
 $ # Run the server
 $ mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.server.HelloWorldServer
 $ # In another terminal run the client
 $ mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.client.HelloWorldClient
-
+```
 
 
 ### Hello World with TLS 
@@ -71,23 +78,30 @@ openssl pkcs8 -topk8 -nocrypt -in client.key -out client.pem
 # Generates server.pem which is the privateKeyFile for the Server
 openssl pkcs8 -topk8 -nocrypt -in server.key -out server.pem
 ```
+if you generate certificates under windows , you might need to install openssl and run batch file
+```
+grpc_key.bat
+```
+and copy generated files to the location of project: path\sslcerts\
 
 #### Hello world example with TLS (no mutual auth):
 
-```bash
+```
 # Server
-./build/install/examples/bin/hello-world-server-tls mate 50440 ~/Downloads/sslcert/server.crt ~/Downloads/sslcert/server.pem
+mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.server.tls.HelloWorldServerTls -Dexec.args="localhost 50440 paths\sslcerts\server.crt path\sslcerts\server.pem"
+
 # Client
-./build/install/examples/bin/hello-world-client-tls mate 50440 ~/Downloads/sslcert/ca.crt
+mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.client.tls.HelloWorldClientTls -Dexec.args="localhost 50440 path\sslcerts\ca.crt"
+
 ```
 
 #### Hello world example with TLS with mutual auth:
 
 ```bash
 # Server
-./build/install/examples/bin/hello-world-server-tls mate 54440 ~/Downloads/sslcert/server.crt ~/Downloads/sslcert/server.pem ~/Downloads/sslcert/ca.crt
+mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.server.tls.HelloWorldServerTls -Dexec.args="localhost 50440 paths\sslcerts\server.crt path\sslcerts\server.pem path\sslcerts\ca.crt"
 # Client
-./build/install/examples/bin/hello-world-client-tls mate 54440 ~/Downloads/sslcert/ca.crt ~/Downloads/sslcert/client.crt ~/Downloads/sslcert/client.pem
+mvn exec:java -Dexec.mainClass=com.ericsson.iot.rms.grpc.client.tls.HelloWorldClientTls -Dexec.args="localhost 50440 path\sslcerts\ca.crt path\sslcert\client.crt path\sslcert\client.pem"
 ```
 
 That's it!
